@@ -1,0 +1,53 @@
+lzc-sdk-version: "0.1"
+name: SQLBot
+package: xyz.mxue.app.sqlbot
+version: 0.0.1
+description: 基于大模型和 RAG 的智能问数系统
+homepage: https://github.com/dataease/SQLBot
+author: dataease
+application:
+  subdomain: sqlbot
+  background_task: false
+  multi_instance: false
+  gpu_accel: false
+  kvm_accel: false
+  usb_accel: false
+  routes:
+    - /=http://sqlbot.xyz.mxue.app.sqlbot.lzcapp:8000/
+services:
+  sqlbot:
+    image: registry.lazycat.cloud/mxuexxmy/dataease/sqlbot:80aa532c75c1e536
+    environment:
+      - POSTGRES_SERVER=sqlbot-db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=sqlbot
+      - POSTGRES_USER=sqlbot
+      - POSTGRES_PASSWORD=sqlbot
+      - PROJECT_NAME=SQLBot
+      - DEFAULT_PWD=SQLBot@123456
+      - SERVER_IMAGE_HOST=https://YOUR_SERVE_IP:MCP_PORT/images/
+      - SECRET_KEY=y5txe1mRmS_JpOrUzFzHEu-kIQn3lf7ll0AOv9DQh0s
+      - BACKEND_CORS_ORIGINS=http://localhost,http://localhost:5173,https://localhost,https://localhost:5173
+      - LOG_LEVEL=INFO
+      - SQL_DEBUG=false
+    depends_on:
+      - sqlbot-db
+    binds:
+      - /lzcapp/var/excel:/opt/sqlbot/data/excel
+      - /lzcapp/var/images:/opt/sqlbot/images
+      - /lzcapp/var/logs:/opt/sqlbot/logs
+  sqlbot-db:
+    image: registry.lazycat.cloud/mxuexxmy/library/postgres:f58b171d79af2c58
+    environment:
+      - POSTGRES_DB=sqlbot
+      - POSTGRES_USER=sqlbot
+      - POSTGRES_PASSWORD=sqlbot
+    binds:
+      - /lzcapp/var/data:/var/lib/postgresql/data
+    health_check:
+      test:
+        - CMD-SHELL
+        - pg_isready
+unsupported_platforms:
+  - ios
+  - android

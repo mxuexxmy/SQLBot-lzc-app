@@ -1,0 +1,44 @@
+{
+  "name": "SQLBot",
+  "package": "xyz.mxue.app.sqlbot",
+  "description": "基于大模型和 RAG 的智能问数系统",
+  "homepage": "https://github.com/dataease/SQLBot",
+  "author": "dataease",
+  "app_features": [],
+  "subdomain": "sqlbot",
+  "version": "0.0.1",
+  "iconPath": "icon.png",
+  "composePath": "docker-compose.yml",
+  "unsupported_platforms": [
+    "ios",
+    "android"
+  ],
+  "lastRouteType": "from_compose",
+  "port_mappings": {
+    "sqlbot_8000_8000": {
+      "use": true,
+      "type": "http",
+      "path": "/",
+      "targetPath": "/"
+    },
+    "sqlbot_8001_8001": {
+      "use": false
+    }
+  },
+  "image_dataease_sqlbot_v1.0.0": {
+    "originalImage": "dataease/sqlbot:v1.0.0",
+    "pushTarget": "lazycat"
+  },
+  "sqlbot_volume_/opt/sqlbot/data/excel_action": "emptyDir",
+  "sqlbot_volume_/opt/sqlbot/data/excel_location": "app_data",
+  "sqlbot_volume_/opt/sqlbot/images_action": "emptyDir",
+  "sqlbot_volume_/opt/sqlbot/images_location": "app_data",
+  "sqlbot_volume_/opt/sqlbot/logs_action": "emptyDir",
+  "sqlbot_volume_/opt/sqlbot/logs_location": "app_data",
+  "image_postgres_17.5": {
+    "originalImage": "postgres:17.5",
+    "pushTarget": "none"
+  },
+  "sqlbot-db_volume_/var/lib/postgresql/data_action": "emptyDir",
+  "sqlbot-db_volume_/var/lib/postgresql/data_location": "app_data"
+}
